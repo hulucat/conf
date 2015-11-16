@@ -1,0 +1,8 @@
+package conf
+
+/**
+*
+ */
+func init() {
+
+}
