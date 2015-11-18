@@ -42,13 +42,12 @@ func load() {
 	if err != nil {
 		fmt.Errorf("Error get current dir: %s", err.Error())
 	}
-	fmt.Printf("Current dir: %s\n", dir)
 	f := fmt.Sprintf("%s/.env.conf", dir)
-	fmt.Printf("f: %s\n", f)
 	file, err := os.Open(f)
 	if err != nil {
 		log.Fatalf("Error load file: %s\n", err.Error())
 	}
+
 	reader := bufio.NewReader(file)
 	var key, value string
 	for {
@@ -60,7 +59,7 @@ func load() {
 			return
 		}
 		ss := strings.Split(line, "=")
-		key, value = strings.Trim(ss[0], " "), strings.Trim(ss[1], " ")
+		key, value = strings.Trim(ss[0], " "), strings.Trim(ss[1], " \n")
 		configMap[key] = value
 	}
 }
