@@ -45,18 +45,22 @@ func load() {
 	f := fmt.Sprintf("%s/.env.conf", dir)
 	file, err := os.Open(f)
 	if err != nil {
-		log.Fatalf("Error load file: %s\n", err.Error())
+		file, err = os.Open("/tmp/.env.conf")
+		if err != nil {
+			log.Fatalf("Error load .env.conf: %s\n", err.Error())
+		}
 	}
-
 	reader := bufio.NewReader(file)
 	var key, value string
 	for {
 		line, err := reader.ReadString('\n')
 		if err != nil {
 			if err != io.EOF {
-				fmt.Errorf("Error read config file: %s", err.Error())
+				log.Fatalf("Error read config file: %s", err.Error())
 			}
-			return
+			if line == "" {
+				return
+			}
 		}
 		ss := strings.Split(line, "=")
 		key, value = strings.Trim(ss[0], " "), strings.Trim(ss[1], " \n")
